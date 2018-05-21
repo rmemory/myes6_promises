@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Promises!</title>
+</head>
+<body>
+<script>
+
+// promises are mostly used with ajax calls
+// A promise that will happen in the future but probably not immediately
+// It is async code.
+
+// fetch will start the fetch and immediately return a promise, 
+// And the promise eventually lets us know when the data arrives
+// Its essentially a listener. The 'then' only returns when the 
+// data returns
+const postsPromise = fetch('http://wesbos.com/wp-json/wp/v2/posts');
+
+postsPromise
+	.then(data => {
+		return data.json()
+	})
+	.then(data => { 
+		console.log(data) 
+	})
+	.catch((err) => {
+		console.error(err);
+	})
+
+</script>
+</body>
+</html>

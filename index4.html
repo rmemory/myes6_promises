@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Chaining Promises</title>
+</head>
+<body>
+<script>
+	/* Sometimes we want to do all of the promises at one time */
+
+	/* Here weather had nothing to do with tweets, we just want to get
+	   them all back at the same time */
+	/* Promise.all is kind of a loop to get all promises */
+	const weather = new Promise((resolve) => {
+		 setTimeout(() => {
+			 resolve({ temp: 29, conditions: 'Sunny with Clouds'});
+		 }, 2000);
+	});
+
+	const tweets = new Promise((resolve) => {
+		 setTimeout(() => {
+			 resolve(['I like cake', 'BBQ is good too!']);
+		 }, 500);
+	});
+
+	Promise
+		 .all([weather, tweets])
+		 .then(responses => {
+			 const [weatherInfo, tweetInfo] = responses;
+			 console.log(weatherInfo, tweetInfo)
+		 });
+
+	const postsPromise = fetch('http://wesbos.com/wp-json/wp/v2/posts');
+	const streetCarsPromise = fetch('http://data.ratp.fr/api/datasets/1.0/search/?q=paris');
+
+	Promise
+		.all([postsPromise, streetCarsPromise])
+		.then(responses => {
+			// Convert both responses to json (note that we are not using parse.json, but "response.json")
+			// see https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+			return Promise.all(responses.map(res => res.json()))
+		})
+		.then(responses => {
+			console.log(responses);
+		});
+
+</script>
+</body>
+</html>
